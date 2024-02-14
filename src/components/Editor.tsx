@@ -52,7 +52,7 @@ export default function Editor({ note }: Props) {
             <Trash2Icon className="w-4 h-4" />
             Delete Note
           </Button>
-          <Button size="sm" disabled={saveNote.isPending} variant='outline' className="p-0">
+          <Button size="sm" disabled={saveNote.isPending} variant='ghost' className="p-0 hover:bg-transparent">
             {saveNote.isPending ? (
               <span className="flex gap-1">
                 <Loader className="w-4 h-4 animate-spin" />

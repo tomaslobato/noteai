@@ -1,7 +1,5 @@
 import Header from "@/components/Header";
 import NewNoteDialog from '@/components/NewNoteDialog'
-import Image from "next/image";
-import Link from "next/link";
 
 export default function Page() {
   return (
