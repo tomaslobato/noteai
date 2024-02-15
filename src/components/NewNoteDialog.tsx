@@ -13,12 +13,20 @@ import { Button } from "./ui/button";
 import { FormEvent, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import {Loader} from 'lucide-react'
+import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function NewNoteDialog() {
   const router = useRouter();
   const [input, setInput] = useState("");
+  const uploadToFirebase = useMutation({ 
+    mutationFn: async (noteId: string) => {
+      const res = await axios.post('/api/uploadToFirebase', {
+        noteId
+      })
+      return res.data
+    } 
+  });
   const createNote = useMutation({
     mutationFn: async () => {
       const response = await axios.post("/api/createNote", {
@@ -36,6 +44,7 @@ export default function NewNoteDialog() {
     }
     createNote.mutate(undefined, {
       onSuccess: ({ noteId }) => {
+        uploadToFirebase.mutate(noteId)
         router.push(`dashboard/note/${noteId}`);
       },
       onError: (err) => {
@@ -48,8 +57,11 @@ export default function NewNoteDialog() {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="md:w-36 border-slate-500 hover:border-slate-600 hover:bg-slate-200 border-2 p-4 h-14 flex justify-center gap-1 items-center rounded-xl">
-          <PlusIcon className="w-6 h-6" strokeWidth={3} />
+        <div className="md:w-36 text-slate-600 border-slate-400 border-das hover:border-slate-500 hover:bg-slate-100 hover:text-slate-700 border-2 p-4 h-14 flex justify-center gap-1 items-center rounded-xl hover:shadow-lg">
+          <PlusIcon
+            className="w-6 h-6 text-slate-500 hover:text-slate-600"
+            strokeWidth={3}
+          />
           <h2>New Note</h2>
         </div>
       </DialogTrigger>
@@ -67,7 +79,13 @@ export default function NewNoteDialog() {
           <div className="flex justify-end gap-2 w-full">
             <Button variant="destructive">Cancel</Button>
             <Button type="submit" disabled={createNote.isPending}>
-              {createNote.isPending ? <span className="flex items-center"><Loader className="w-4 h-4 mr-2 animate-spin"/> Generating...</span> : "Create"}
+              {createNote.isPending ? (
+                <span className="flex items-center">
+                  <Loader className="w-4 h-4 mr-2 animate-spin" /> Generating...
+                </span>
+              ) : (
+                "Create"
+              )}
             </Button>
           </div>
         </form>

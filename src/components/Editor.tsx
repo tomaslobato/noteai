@@ -12,6 +12,7 @@ import { NoteType } from "@/lib/db/schema";
 import { useCompletion } from "ai/react";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { Loader, Trash2Icon } from "lucide-react";
+import DeleteButton from "./DeleteButton";
 
 type Props = { note: NoteType };
 
@@ -34,7 +35,7 @@ export default function Editor({ note }: Props) {
   const customText = Text.extend({
     addKeyboardShortcuts() {
       return {
-        "Shift-a": () => {
+        "Mod-Space": () => {
           // take the last 30 words
           const prompt = this.editor.getText().split(" ").slice(-30).join(" ");
           complete(prompt);
@@ -81,10 +82,7 @@ export default function Editor({ note }: Props) {
         {editor && <EditorMenuBar editor={editor} />}
 
         <div className="flex items-center gap-2">
-          <Button variant="destructive" className="gap-1" size="sm">
-            <Trash2Icon className="w-4 h-4" />
-            Delete Note
-          </Button>
+          <DeleteButton noteId={note.id!}/>
           <Button
             size="sm"
             disabled={saveNote.isPending}
@@ -109,7 +107,7 @@ export default function Editor({ note }: Props) {
       </div>
       <span className="text-xs">
         <kbd className="p-1 text-xs font-semibold text-slate-900 bg-slate-100 border border-slate-200 rounded-lg">
-          Shift + A
+          Cmd + Space
         </kbd>{" "}
         for AI auto completion
       </span>
