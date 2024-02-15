@@ -25,7 +25,7 @@ export default async function Page() {
           ) : (
             <ul className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-2">
               {notes.map((note) => (
-                <li>
+                <li key={note.id}>
                   <a href={`dashboard/note/${note.id}`} key={note.id} className="overflow-hidden flex flex-col hover:shadow-lg border border-slate-300 rounded-xl">
                     <Image
                       width={400}
