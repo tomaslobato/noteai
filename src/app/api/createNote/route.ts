@@ -1,5 +1,3 @@
-// /api/createNotebook
-
 import { db } from "@/lib/db"
 import { $notes } from "@/lib/db/schema"
 import { generateImage, generateImagePrompt } from "@/lib/openai"

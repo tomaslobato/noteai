@@ -36,7 +36,6 @@ export default function NewNoteDialog() {
     }
     createNote.mutate(undefined, {
       onSuccess: ({ noteId }) => {
-        console.log(noteId);
         router.push(`dashboard/note/${noteId}`);
       },
       onError: (err) => {
